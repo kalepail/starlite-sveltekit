@@ -18,7 +18,7 @@
 		"@rollup/plugin-inject": "^4.0.4",
 		"@rollup/plugin-legacy": "^2.2.0",
 		"@sveltejs/adapter-auto": "next",
-		"@sveltejs/adapter-cloudflare": "next",
+		"@sveltejs/adapter-cloudflare": "1.0.0-next.26",
 		"@sveltejs/adapter-cloudflare-workers": "next",
 		"@sveltejs/kit": "next",
 		"autoprefixer": "^10.4.7",
