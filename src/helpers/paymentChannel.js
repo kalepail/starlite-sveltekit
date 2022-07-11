@@ -1,4 +1,4 @@
-// TODO integrate an actual payment op
+// TODO integrate better balanced payment
 
 export async function generateOpenChannelTx({
   sourceAccount,
@@ -69,9 +69,10 @@ export async function generatePaymentChannelTx({
   publicKey1,
   publicKey2,
   keypair1,
-  sequence
+  sequence,
+  amount
 }) {
-  const { xdr, StrKey, Account, SignerKey, Operation, Networks, TransactionBuilder } = await import ('stellar-sdk')
+  const { xdr, StrKey, Account, SignerKey, Operation, Networks, TransactionBuilder, Asset } = await import ('stellar-sdk')
 
   const txCloseSequence = String(parseInt(sourceAccount.sequence) + sequence + 2)
   const txClose = new TransactionBuilder(
@@ -79,6 +80,12 @@ export async function generatePaymentChannelTx({
     fee: 100000,
     networkPassphrase: Networks.TESTNET
   })
+  .addOperation(Operation.payment({
+    destination: publicKey2,
+    asset: Asset.native(),
+    amount,
+    source: publicKey1
+  }))
   .addOperation(Operation.setOptions({
     lowThreshold: 0,
     medThreshold: 0,

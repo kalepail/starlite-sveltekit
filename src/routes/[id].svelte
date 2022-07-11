@@ -2,6 +2,7 @@
 import SimplePeer from 'simple-peer/simplepeer.min.js'
 import { onMount } from 'svelte'
 import { dev } from '$app/env'
+import BigNumber from 'bignumber.js'
 
 import { generatePaymentChannelTx, generateOpenChannelTx } from '../helpers/paymentChannel'
 
@@ -20,6 +21,8 @@ let server = null
 let payerIsFoo = false
 
 onMount(async () => {
+  localStorage.removeItem('amount')
+
   const { Keypair, Networks, Server, Transaction } = await import('stellar-sdk')
 
   const encoder = new TextEncoder()
@@ -200,6 +203,8 @@ onMount(async () => {
       const txDeclarationTransaction = new Transaction(payment.txDeclaration, Networks.TESTNET)
       const txCloseTransaction = new Transaction(payment.txClose, Networks.TESTNET)
 
+      localStorage.setItem('amount', txCloseTransaction.operations?.[0].amount || 0)
+
       payments.splice(0, 0, {
         txDeclarationSequence: txDeclarationTransaction.sequence,
         txCloseSequence: txCloseTransaction.sequence,
@@ -216,13 +221,16 @@ onMount(async () => {
     if (countSent >= totalPayments)
       return
 
+    const amount = new BigNumber(localStorage.getItem('amount') || 0).plus(Math.random() * 10).toFixed(7)
+
     let payment = await generatePaymentChannelTx({
       sourceAccount,
       publicKey1: publicKey,
       publicKey2: publicKey2,
       keypair1: keypair,
       keypair2: keypair2,
-      sequence: countSent + countReceived
+      sequence: countSent + countReceived,
+      amount
     })
 
     const uint8 = encoder.encode(JSON.stringify(payment))
@@ -233,6 +241,7 @@ onMount(async () => {
 
   return () => {
     clearInterval(interval)
+    localStorage.removeItem('amount')
 
     if (socket) {
       socket.close()

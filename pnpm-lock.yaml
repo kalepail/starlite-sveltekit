@@ -13,6 +13,7 @@ specifiers:
   '@sveltejs/adapter-cloudflare-workers': next
   '@sveltejs/kit': next
   autoprefixer: ^10.4.7
+  bignumber.js: ^9.0.2
   buffer: ^6.0.3
   esbuild: ^0.14.48
   express: ^4.18.1
@@ -47,6 +48,7 @@ devDependencies:
   '@sveltejs/adapter-cloudflare-workers': 1.0.0-next.47
   '@sveltejs/kit': 1.0.0-next.368_svelte@3.49.0+vite@2.9.14
   autoprefixer: 10.4.7_postcss@8.4.14
+  bignumber.js: 9.0.2
   buffer: 6.0.3
   esbuild: 0.14.49
   express: 4.18.1
@@ -844,6 +846,10 @@ packages:
 
   /bignumber.js/4.1.0:
     resolution: {integrity: sha512-eJzYkFYy9L4JzXsbymsFn3p54D+llV27oTQ+ziJG7WFRheJcNZilgVXMG0LoZtlQSKBsJdWtLFqOD0u+U0jZKA==}
+    dev: true
+
+  /bignumber.js/9.0.2:
+    resolution: {integrity: sha512-GAcQvbpsM0pUb0zw1EI0KhQEZ+lRwR5fYaAp3vPOYuP7aDvGy6cVN6XHLauvF8SOga2y0dcLcjt3iQDTSEliyw==}
     dev: true
 
   /binary-extensions/2.2.0:
