@@ -1,6 +1,7 @@
 <script>
 import SimplePeer from 'simple-peer/simplepeer.min.js'
 import { onMount } from 'svelte'
+import { dev } from '$app/env'
 
 import { generatePaymentChannelTx, generateOpenChannelTx } from '../helpers/paymentChannel'
 
@@ -16,6 +17,7 @@ let paymentsPerSecond = 0
 let iceServers = undefined
 let interval = null
 let server = null
+let payerIsFoo = false
 
 onMount(async () => {
   const { Keypair, Networks, Server, Transaction } = await import('stellar-sdk')
@@ -25,35 +27,59 @@ onMount(async () => {
 
   const [ payerId ] = location.pathname.split('/').reverse()
   const payerIdArr = encoder.encode(payerId)
-  const payerIsFoo = payerId === 'foo'
+  const payerIdLen = payeeIdArr.length
 
   const payeeId = payerId === 'foo' ? 'bar' : 'foo'
   const payeeIdArr = encoder.encode(payeeId)
   const payeeIdLen = payeeIdArr.length
 
+  const foo = dev ? 'SCUOSJDE2DJF3J4CL6I52HPTWZHRW4DAJXUQ44I4RG4HUBIQOXBALIYJ' : 'SBZBAOZNWO7XYUS6N46PEPOM7XZCC3NXHT3ZL32ZVP35XKVIHJ56EUFV'
+  const bar = dev ? 'SB3ZBGKYG7MHRRK2YR3FL4IVUZLNYRIHTYYKNHEVH243VTBMEDE22BSH' : 'SANQNM3U2XIQR3VKVKZ5GVXSHW5EETUAFHA4QCPVFZAPBJJPENHLMU3A'
+
+  payerIsFoo = payerId === 'foo'
   server = new Server('https://horizon-testnet.stellar.org')
   keypair = Keypair.fromSecret(
     payerIsFoo 
-    ? 'SDOXPFFNJAHFSJSNJAOEOTXTAAOLGBNUAGEVDX3IATV4BBOG2FPYQFJR' 
-    : 'SCGDKGAKF77SIGV2TXB6TN4SJECWZDK6GTABUSTFUARNM6QPQEQC7QEW'
+    ? foo
+    : bar
   )
   const keypair2 = Keypair.fromSecret(
     payerIsFoo 
-    ? 'SCGDKGAKF77SIGV2TXB6TN4SJECWZDK6GTABUSTFUARNM6QPQEQC7QEW'
-    : 'SDOXPFFNJAHFSJSNJAOEOTXTAAOLGBNUAGEVDX3IATV4BBOG2FPYQFJR'
+    ? bar
+    : foo
   )
   const publicKey = keypair.publicKey()
   const publicKey2 = keypair2.publicKey()
-  const sourcePublicKey = payerIsFoo ? publicKey : publicKey2
+  const [
+    account, 
+    account2
+  ] = await Promise.all([
+    server
+    .loadAccount(publicKey)
+    .catch(() => 
+      server
+      .friendbot(publicKey)
+      .call()
+    )
+    .finally(() => 
+      server
+      .loadAccount(publicKey)
+    ),
 
-  try {
-    sourceAccount = await server.loadAccount(sourcePublicKey)
-  } catch(err) {
-    sourceAccount = await server
-    .friendbot(sourcePublicKey)
-    .call()
-    .then(() => server.loadAccount(sourcePublicKey))
-  }
+    server
+    .loadAccount(publicKey2)
+    .catch(() => 
+      server
+      .friendbot(publicKey2)
+      .call()
+    )
+    .finally(() => 
+      server
+      .loadAccount(publicKey2)
+    )
+  ])
+
+  sourceAccount = payerIsFoo ? account : account2
 
   await generateOpenChannelTx({
     sourceAccount,

@@ -29,7 +29,8 @@ export async function generateOpenChannelTx({
     signer: {
       ed25519PublicKey: publicKey2,
       weight: 1
-    }
+    },
+    source: publicKey1
   }))
   .addOperation(Operation.setOptions({
     lowThreshold: 2,
@@ -84,7 +85,8 @@ export async function generatePaymentChannelTx({
     signer: {
       ed25519PublicKey: publicKey2,
       weight: 0
-    }
+    },
+    source: publicKey1
   }))
   .addOperation(Operation.setOptions({
     lowThreshold: 0,
