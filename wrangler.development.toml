@@ -1,0 +1,11 @@
+compatibility_flags = []
+compatibility_date = "2021-11-12"
+
+kv_namespaces = [
+  { binding = "ICEICEBABY" }
+]
+
+[durable_objects]
+bindings = [
+  { name = "SOCKETS", class_name = "Sockets" }
+]

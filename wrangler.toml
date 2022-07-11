@@ -1,0 +1,25 @@
+name = "starlite"
+main = "worker-site/worker.mjs"
+usage_model = "bundled"
+compatibility_flags = []
+compatibility_date = "2021-11-12"
+workers_dev = true
+
+kv_namespaces = [
+  { binding = "ICEICEBABY", id = "5912a022d45a4f40bfd92dfa9dbf4361" }
+]
+
+[durable_objects]
+bindings = [
+  { name = "SOCKETS", class_name = "Sockets" }
+]
+
+[build]
+command = "pnpm build"
+
+[site]
+bucket = ".svelte-kit/assets"
+
+[[migrations]]
+tag = "v1"
+new_classes = ["Sockets"]
