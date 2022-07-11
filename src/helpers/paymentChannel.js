@@ -1,3 +1,5 @@
+// TODO integrate an actual payment op
+
 export async function generateOpenChannelTx({
   sourceAccount,
   publicKey1, 

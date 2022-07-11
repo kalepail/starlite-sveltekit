@@ -27,7 +27,7 @@ onMount(async () => {
 
   const [ payerId ] = location.pathname.split('/').reverse()
   const payerIdArr = encoder.encode(payerId)
-  const payerIdLen = payeeIdArr.length
+  const payerIdLen = payerIdArr.length
 
   const payeeId = payerId === 'foo' ? 'bar' : 'foo'
   const payeeIdArr = encoder.encode(payeeId)
