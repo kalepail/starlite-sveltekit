@@ -27,7 +27,7 @@ export async function handle({ event, resolve }) {
 
     // request.url = url.href
 
-    const { ws } = await import('./connect/[id]/ws.js')
+    const { ws } = await import('./routes/connect/[id]/ws.js')
 
     return new Response(null, await ws(event))
     ////
