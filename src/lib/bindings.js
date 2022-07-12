@@ -3,8 +3,8 @@ import { ws } from '../routes/connect/[id]/ws.js'
 
 const handler = {
   fetch(req, env, ctx) {
-    if (global.CTX)
-      CTX(ctx)
+    // if (globalThis.CTX)
+    //   CTX(ctx)
 
     const url = new URL(req.url)
     const { pathname } = url
