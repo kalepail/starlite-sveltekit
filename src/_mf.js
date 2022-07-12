@@ -1,9 +1,9 @@
 // https://github.com/sveltejs/kit/issues/4292
 
-import { dev } from '$app/env'
+import { prod } from '$app/env'
 
 export default async (_platform) => {
-  if (!dev)
+  if (prod)
     return _platform
 
   if (_platform)

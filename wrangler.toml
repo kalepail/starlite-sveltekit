@@ -15,7 +15,7 @@ bindings = [
 ]
 
 [build]
-command = "pnpm build"
+command = "pnpm build:worker"
 
 [site]
 bucket = ".svelte-kit/assets"

@@ -22,9 +22,11 @@ export async function handle({ event, resolve }) {
       }
     })
 
-    const { default: bindings } = await import(`./lib/bindings.js`)
+    const { default: { fetch }} = await import(`./lib/bindings.js`)
 
-    return new Response(null, await bindings[routeId || pathname.substring(1)](event))
+    console.log(event.platform)
+
+    return new Response(null, await fetch(request, event.platform.env, event.platform.context))
   }
 
   return resolve(event)
