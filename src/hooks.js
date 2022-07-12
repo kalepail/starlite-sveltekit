@@ -22,11 +22,13 @@ export async function handle({ event, resolve }) {
       }
     })
 
+    // Only ever called on prod??
     const { default: { fetch }} = await import(`./lib/bindings.js`)
 
-    console.log(event.platform)
+    request.url = url.href
 
     return new Response(null, await fetch(request, event.platform.env, event.platform.context))
+    ////
   }
 
   return resolve(event)
