@@ -22,11 +22,8 @@ export async function handle({ event, resolve }) {
       }
     })
 
-    // Only ever called on prod??
+    // Only ever called on prod
     // const { default: { fetch }} = await import(`./lib/bindings.js`)
-
-    // request.url = url.href
-
     const { ws } = await import('./routes/connect/[id]/ws.js')
 
     return new Response(null, await ws(event))

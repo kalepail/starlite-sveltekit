@@ -3,9 +3,8 @@ import { ws } from '../routes/connect/[id]/ws.js'
 
 const handler = {
   fetch(req, env, ctx) {
-    if (globalThis.CTX)
-      CTX(ctx)
-
+    
+    // Only ever called in dev
     const url = new URL(req.url)
     const { pathname } = url
     const [,, id] = pathname.split('/')
@@ -23,6 +22,12 @@ const handler = {
 
     if (/^\/connect\/.*\/ws$/.test(pathname))
       return ws(event)
+
+    if (
+      global.CTX 
+      || globalThis.CTX
+    ) CTX(ctx)
+    ////
 
     return new Response(null, {status: 404})
   }

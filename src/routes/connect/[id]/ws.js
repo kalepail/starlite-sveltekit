@@ -20,7 +20,7 @@ export async function ws({ request, platform, params }) {
     const sockStub = SOCKETS.get(sockId)
     const sockRes = await sockStub.fetch(request)
 
-    return sockRes
+    return new Response(null, sockRes)
   } catch(err) {
     // Annoyingly, if we return an HTTP error in response to a WebSocket request, Chrome devtools
     // won't show us the response body! So... let's send a WebSocket response with an error
