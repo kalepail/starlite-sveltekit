@@ -1,10 +1,12 @@
 import { StatusError } from "itty-router-extras"
 
-export async function ws(req, env, ctx) {
+export async function ws({ request, url, platform, params }) {
   try {
-    const { headers } = req
-    const url = new URL(req.url)
-    const [,, id] = url.pathname.split('/')
+    const { headers } = request
+    const { id } = params
+    const { env } = platform
+    // const url = new URL(req.url)
+    // const [,, id] = url.pathname.split('/')
     const { SOCKETS } = env
 
     if (String(id) === 'null')
