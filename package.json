@@ -4,7 +4,6 @@
 	"scripts": {
 		"start": "NODE_OPTIONS=\"--experimental-vm-modules --no-warnings\" node dev.js",
 		"build": "vite build && node merge.js",
-		"build:pages": "vite build",
 		"package": "svelte-kit package",
 		"preview": "vite preview",
 		"prepare": "svelte-kit sync",

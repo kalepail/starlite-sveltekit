@@ -13,7 +13,7 @@ export async function handle({ event, resolve }) {
     
     // 3000 (vite / sveltekit) doesn't support websockets so forward the request to Miniflare server
     if (
-      dev 
+      dev
       && url.port === '3000'
     ) return new Response(null, {
       status: 307,
@@ -21,10 +21,10 @@ export async function handle({ event, resolve }) {
         'Location': url.href.replace(/:\d+/gi, ':3030')
       }
     })
-    
-    const { ws } = await import('./routes/connect/[id]/ws.js') // await import(`./routes/${pathname.substring(1)}.js`)
 
-    return new Response(null, await ws(event))
+    const { default: bindings } = await import(`./lib/bindings.js`)
+
+    return new Response(null, await bindings[routeId || pathname.substring(1)](event))
   }
 
   return resolve(event)

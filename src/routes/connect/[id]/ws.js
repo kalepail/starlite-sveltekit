@@ -1,10 +1,10 @@
 import { StatusError } from "itty-router-extras"
 
-export async function ws({ request, url, platform, params }) {
+export async function ws(req, env, ctx) {
   try {
-    const { headers } = request
-    const { id } = params
-    const { env } = platform
+    const { headers } = req
+    const url = new URL(req.url)
+    const [,, id] = url.pathname.split('/')
     const { SOCKETS } = env
 
     if (String(id) === 'null')
@@ -18,9 +18,9 @@ export async function ws({ request, url, platform, params }) {
 
     const sockId = SOCKETS.idFromName('sockets')
     const sockStub = SOCKETS.get(sockId)
-    const sockRes = await sockStub.fetch(request)
+    const sockRes = await sockStub.fetch(req)
 
-    return new Response(null, sockRes)
+    return sockRes
   } catch(err) {
     // Annoyingly, if we return an HTTP error in response to a WebSocket request, Chrome devtools
     // won't show us the response body! So... let's send a WebSocket response with an error

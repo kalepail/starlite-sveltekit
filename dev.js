@@ -1,17 +1,37 @@
 import { Miniflare } from 'miniflare'
 import express from 'express'
 import { createServer } from 'vite'
+import esbuild from 'esbuild'
+import path from 'path'
 
 async function createMiniflareServer() {
+  const bindingsFile = path.join(process.cwd(), '/src/lib/bindings.js')
+  const { outputFiles: [{ text }] } = await esbuild.build({
+    entryPoints: [bindingsFile],
+    bundle: true,
+    platform: 'neutral',
+    write: false,
+    watch: {
+      onRebuild(error, result) {
+        if (error) 
+          console.error(error)
+        else {
+          const { outputFiles: [{text}] } = result
+          return mf.setOptions({ script: text })
+        } 
+      },
+    },
+  })
+
   const mf = new Miniflare({
-    scriptPath: './worker-site/worker.mjs',
+    script: text,
     port: 3030,
-    watch: true,
+    // watch: true,
 
     modules: true,
-    envPath: true,
+    envPath: './.env.development.local',
     packagePath: true,
-    wranglerConfigPath: true,
+    wranglerConfigPath: './wrangler.development.toml',
 
     kvPersist: true,
     cachePersist: true,

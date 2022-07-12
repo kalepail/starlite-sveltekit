@@ -2,8 +2,6 @@
 
 import { dev } from '$app/env'
 
-let context
-
 export default async (_platform) => {
   if (!dev)
     return _platform
@@ -13,24 +11,30 @@ export default async (_platform) => {
 
   const esbuild = await import('esbuild')
   const path = await import('path')
-  const fs = await import('fs')
 
-  const doFile = path.join(process.cwd(), '/src/helpers/do.js')
-  const doCode = fs.readFileSync(doFile).toString('utf8')
-  
-  const { code } = esbuild.transformSync(`
-    export default {
-      fetch: async (req, env, ctx) => {
-        CTX(ctx)
-        return new Response(null, {status: 204});
-      }
-    };
-    ${doCode};
-    `
-  )
+  let context
+
+  const bindingsFile = path.join(process.cwd(), '/src/lib/bindings.js')
+  const { outputFiles: [{ text }] } = await esbuild.build({
+    entryPoints: [bindingsFile],
+    bundle: true,
+    platform: 'neutral',
+    write: false,
+    watch: {
+      onRebuild(error, result) {
+        if (error) 
+          console.error(error)
+        else {
+          const { outputFiles: [{text}] } = result
+          return mf.setOptions({ script: text })
+        } 
+      },
+    },
+  })
 
   const { Miniflare } = await import('miniflare')
   const mf = new Miniflare({
+    script: text,
     modules: true,
     envPath: './.env.development.local',
     packagePath: true,
@@ -43,8 +47,7 @@ export default async (_platform) => {
     globalAsyncIO: true,
     globalTimers: true,
     globalRandom: true,
-    
-    script: code,
+  
     globals: { CTX: (ctx) => context = ctx }, 
   })
 

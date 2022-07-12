@@ -1,7 +1,6 @@
 import { sveltekit } from '@sveltejs/kit/vite'
 import inject from '@rollup/plugin-inject'
 import path from 'path'
-import vpdi from 'vite-plugin-dynamic-import'
 
 import { NodeGlobalsPolyfillPlugin } from '@esbuild-plugins/node-globals-polyfill'
 
@@ -31,7 +30,6 @@ const config = {
 		sourcemap: true,
 		rollupOptions: {
 			plugins: [
-				vpdi.default(),
 				inject({
 					util: 'util',
 					window: path.resolve('src/helpers/window.js'),
