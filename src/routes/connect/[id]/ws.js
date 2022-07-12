@@ -5,8 +5,6 @@ export async function ws({ request, platform, params }) {
     const { headers } = request
     const { id } = params
     const { env } = platform
-    // const url = new URL(req.url)
-    // const [,, id] = url.pathname.split('/')
     const { SOCKETS } = env
 
     if (String(id) === 'null')
@@ -20,7 +18,7 @@ export async function ws({ request, platform, params }) {
 
     const sockId = SOCKETS.idFromName('sockets')
     const sockStub = SOCKETS.get(sockId)
-    const sockRes = await sockStub.fetch(req)
+    const sockRes = await sockStub.fetch(request)
 
     return sockRes
   } catch(err) {
