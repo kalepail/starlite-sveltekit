@@ -1,9 +1,17 @@
-import { ws } from '../../routes/connect/[id]/ws.js'
+import { get } from '../../routes/connect/[id]/ws.js'
+
+export function resolveWs(event) {
+  if (/^\/connect\/.*\/ws$/.test(event.url.pathname))
+    return get(event)
+
+  return new Response(null, { status: 404 })
+}
 
 const handler = {
   fetch(req, env, ctx) {
-    
-    // Only ever called in dev as this is the custom miniflare code
+    if (global.CTX)
+      CTX(ctx)
+
     const url = new URL(req.url)
     const { pathname } = url
     const [,, id] = pathname.split('/')
@@ -16,19 +24,11 @@ const handler = {
       },
       params: {
         id
-      }
+      },
+      url
     }
 
-    if (/^\/connect\/.*\/ws$/.test(pathname))
-      return ws(event)
-
-    if (
-      global.CTX 
-      || globalThis.CTX
-    ) CTX(ctx)
-    ////
-
-    return new Response(null, {status: 404})
+    return resolveWs(event)
   }
 }
 

@@ -1,6 +1,6 @@
 import { StatusError } from "itty-router-extras"
 
-export async function ws({ request, platform, params }) {
+export async function get({ request, platform, params }) {
   try {
     const { headers } = request
     const { id } = params

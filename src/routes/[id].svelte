@@ -2,6 +2,7 @@
 import SimplePeer from 'simple-peer/simplepeer.min.js'
 import { onMount } from 'svelte'
 import { dev } from '$app/env'
+import { getStores, navigating, page, session, updated } from '$app/stores';
 import BigNumber from 'bignumber.js'
 
 import { generatePaymentChannelTx, generateOpenChannelTx } from '../helpers/paymentChannel'
@@ -117,9 +118,10 @@ onMount(async () => {
   }
   function setupSocket() {
     const protocol = location.protocol.indexOf('s') === -1 ? 'ws' : 'wss'
-    const hostname = location.hostname === 'localhost' ? `${location.hostname}:3030` : `${location.hostname}`
+    const host = `${location.host.replace(/:\d+/gi, ':3030')}`
 
-    socket = new WebSocket(`${protocol}://${hostname}/connect/${payerId}/ws`)
+    // socket = new WebSocket(`${protocol}://${hostname}/connect/${payerId}/ws`)
+    socket = new WebSocket(`${protocol}://${host}/connect/${payerId}/ws`)
 
     socket.onopen = async (event) => {
       console.log('socket open', event)

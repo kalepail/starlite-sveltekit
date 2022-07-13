@@ -1,7 +1,6 @@
 import { sveltekit } from '@sveltejs/kit/vite'
 import inject from '@rollup/plugin-inject'
 import path from 'path'
-import stripCode from "rollup-plugin-strip-code"
 
 import { NodeGlobalsPolyfillPlugin } from '@esbuild-plugins/node-globals-polyfill'
 
@@ -12,6 +11,12 @@ const config = {
 	],
 	server: {
 		middlewareMode: 'ssr',
+		// proxy: {
+		// 	'^/connect/.*/ws': {
+		// 		target: 'http://localhost:3030',
+		// 		// ws: true,
+		// 	}
+		// }
 	},
 	optimizeDeps: {
 		esbuildOptions: {
@@ -35,10 +40,6 @@ const config = {
 					util: 'util',
 					window: path.resolve('src/helpers/window.js'),
 					Buffer: ['buffer', 'Buffer'],
-				}),
-				stripCode({
-					start_comment: 'START.TOSSME',
-					end_comment: 'END.TOSSME'
 				})
 			]
 		}
