@@ -1,3 +1,5 @@
+// https://github.com/sveltejs/kit/blob/062f38e9c1716089d3998da9110627c48190ed11/packages/kit/src/utils/routing.js
+
 const param_pattern = /^(\.\.\.)?(\w+)(?:=(\w+))?$/;
 
 /** @param {string} id */

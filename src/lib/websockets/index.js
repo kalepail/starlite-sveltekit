@@ -1,13 +1,4 @@
-import { parse_route_id } from '../../helpers/router'
-
-const routes = [{
-  id: '/connect/[id]/ws',
-  fn: import('../../routes/connect/[id]/ws.js') // .then(({ get }) => get)
-}].map(({id, fn}) => ({
-  id,
-  fn,
-  ...parse_route_id(id)
-}))
+import { routes } from './routes'
 
 export async function wsResolve(event) {
   let match
