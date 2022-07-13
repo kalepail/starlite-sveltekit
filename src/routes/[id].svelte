@@ -203,8 +203,9 @@ onMount(async () => {
       const payment = JSON.parse(decoder.decode(data))
       const txDeclarationTransaction = new Transaction(payment.txDeclaration, Networks.TESTNET)
       const txCloseTransaction = new Transaction(payment.txClose, Networks.TESTNET)
+      const {amount, source, destination} = txCloseTransaction.operations?.[0]
 
-      localStorage.setItem('amount', txCloseTransaction.operations?.[0].amount || 0)
+      localStorage.setItem('amount', amount || 0)
 
       payments.splice(0, 0, {
         txDeclarationSequence: txDeclarationTransaction.sequence,
@@ -212,6 +213,9 @@ onMount(async () => {
         txDeclaration_submitted: false,
         txClose_submitted: false,
         loading: false,
+        source,
+        amount,
+        destination,
         ...payment
       })
 
@@ -301,6 +305,9 @@ function alertError(err) {
     : err?.message || err
   )
 }
+function abrv(key) {
+  return `${key.substring(0, 5)}...${key.substring(key.length - 5)}`
+}
 </script>
 
 <span>{keypair?.publicKey()}</span>
@@ -313,11 +320,21 @@ function alertError(err) {
   {#each payments as payment}
     <li>
       {#if payment.txDeclaration_submitted && payment.txClose_submitted}
-        <span class="button">Payment Channel Closed</span>
+        <span class="button flex flex-col !items-start">
+          <p class="!m-0">Payment Channel Closed</p>
+        </span>
       {:else if payment.txDeclaration_submitted}
-        <button on:click={txClose(payment)}>{payment.loading ? '...' : `Submit (${payment.txCloseSequence}) txClose`}</button>
+        <button class="flex flex-col !items-start" on:click={txClose(payment)}>
+          <p class="!m-0">{payment.loading ? '...' : `Submit txClose`}</p>
+          <aside>Sequence: {payment.txCloseSequence}</aside>
+          <aside><strong>{payment.amount} XLM</strong> from <strong>{abrv(payment.source)}</strong> to <strong>{abrv(payment.destination)}</strong></aside>
+        </button>
       {:else}
-        <button on:click={txDeclaration(payment)}>{payment.loading ? '...' : `Submit (${payment.txDeclarationSequence}) txDeclaration`}</button>
+        <button class="flex flex-col !items-start" on:click={txDeclaration(payment)}>
+          <p class="!m-0">{payment.loading ? '...' : `Submit txDeclaration`}</p>
+          <aside>Sequence: {payment.txDeclarationSequence}</aside>
+          <aside><strong>{payment.amount} XLM</strong> from <strong>{abrv(payment.source)}</strong> to <strong>{abrv(payment.destination)}</strong></aside>
+        </button>
       {/if}
     </li>
   {/each}
@@ -338,20 +355,28 @@ p {
   margin-bottom: 5px;
   max-width: 500px;
   width: 100%;
+  text-align: left;
 }
 button,
 .button {
   background-color: black;
   color: white;
   margin-top: 5px;
-  padding: 0 5px;
-  height: 30px;
-  font-size: 12px;
-  text-transform: uppercase;
-  font-weight: bold;
+  padding: 5px;
   display: inline-flex;
   align-items: center;
   cursor: pointer;
+  width: 100%;
+}
+button p,
+.button p {
+  font-size: 12px;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+button aside,
+.button aside {
+  font-size: 10px;
 }
 span.button {
   background-color: red;
