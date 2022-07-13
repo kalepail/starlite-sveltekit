@@ -2,10 +2,9 @@
 import SimplePeer from 'simple-peer/simplepeer.min.js'
 import { onMount } from 'svelte'
 import { dev } from '$app/env'
-import { getStores, navigating, page, session, updated } from '$app/stores';
 import BigNumber from 'bignumber.js'
 
-import { generatePaymentChannelTx, generateOpenChannelTx } from '../helpers/paymentChannel'
+import { generatePaymentChannelTx, generateOpenChannelTx } from '../helpers/payment-channel'
 
 let peer = null
 let socket = null
