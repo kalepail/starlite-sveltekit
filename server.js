@@ -28,7 +28,7 @@ async function startServer() {
   })
 
   const mf = new Miniflare({
-    script: wsCode + doCode, // text,
+    script: wsCode + doCode,
     port: 3030,
 
     modules: true,
