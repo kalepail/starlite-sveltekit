@@ -324,17 +324,6 @@ function alertError(err) {
 </ul>
 
 <style>
-#app {
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  margin-top: 50px;
-  display: flex;
-  flex-direction: column;
-  font-size: 16px;
-  font-weight: normal;
-  align-items: center;
-}
 ul {
   max-height: 500px;
   overflow: scroll;
@@ -349,21 +338,6 @@ p {
   margin-bottom: 5px;
   max-width: 500px;
   width: 100%;
-}
-form {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  max-width: 500px;
-  width: 100%;
-  font-size: 10px;
-}
-textarea {
-  border: 1px solid black;
-  overflow-wrap: break-word;
-  word-break: break-all;
-  width: 100%;
-  height: 100px;
 }
 button,
 .button {
@@ -381,12 +355,5 @@ button,
 }
 span.button {
   background-color: red;
-}
-pre {
-  margin-top: 5px;
-  max-width: 500px;
-  overflow-wrap: break-word;
-  word-break: break-all;
-  font-size: 10px;
 }
 </style>

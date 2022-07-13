@@ -2,7 +2,7 @@
 	"private": true,
 	"type": "module",
 	"scripts": {
-		"start": "NODE_OPTIONS=\"--experimental-vm-modules --no-warnings\" node server.js",
+		"start": "node --experimental-vm-modules --no-warnings server.js",
 		"build:pages": "vite build",
 		"build:worker": "pnpm build:pages && node merge.js",
 		"package": "svelte-kit package",
