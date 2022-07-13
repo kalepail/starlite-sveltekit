@@ -1,5 +1,4 @@
 import { dev } from '$app/env'
-import _mf from './_mf'
 
 /** @type {import('@sveltejs/kit').Handle} */
 export async function handle({ event, resolve }) {
@@ -7,7 +6,10 @@ export async function handle({ event, resolve }) {
   const { headers } = request
   const { pathname } = url
 
-  event.platform = await _mf(event.platform)
+  /* START.TOSSME */
+  const { createMiniflareServer } = await import('./_servers.js')
+  event.platform = await createMiniflareServer(false)
+  /* END.TOSSME */
 
   if (headers.get('upgrade') === 'websocket') {
     
@@ -22,7 +24,7 @@ export async function handle({ event, resolve }) {
       }
     })
 
-    // Only ever called on prod
+    // Only ever called on prod as the 3030 port is running custom code not svelte code
     // const { default: { fetch }} = await import(`./lib/bindings.js`)
     const { ws } = await import('./routes/connect/[id]/ws.js')
 

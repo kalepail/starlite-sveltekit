@@ -1,10 +1,9 @@
-import { Sockets } from './durable-objects/sockets.js'
-import { ws } from '../routes/connect/[id]/ws.js'
+import { ws } from '../../routes/connect/[id]/ws.js'
 
 const handler = {
   fetch(req, env, ctx) {
     
-    // Only ever called in dev
+    // Only ever called in dev as this is the custom miniflare code
     const url = new URL(req.url)
     const { pathname } = url
     const [,, id] = pathname.split('/')
@@ -34,6 +33,5 @@ const handler = {
 }
 
 export {
-  handler as default,
-  Sockets
+  handler as default
 }
