@@ -11,12 +11,6 @@ const config = {
 	],
 	server: {
 		middlewareMode: 'ssr',
-		// proxy: {
-		// 	'^/connect/.*/ws': {
-		// 		target: 'http://localhost:3030',
-		// 		// ws: true,
-		// 	}
-		// }
 	},
 	optimizeDeps: {
 		esbuildOptions: {
