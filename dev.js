@@ -1,10 +1,10 @@
-async function createServer() {
-  const { default: express } = await import('express')
-  const { createServer } = await import('vite')
-  const { Miniflare } = await import('miniflare')
-  const esbuild = await import('esbuild')
-  const path = await import('path')
+import express from 'express'
+import { createServer } from 'vite'
+import { Miniflare } from 'miniflare'
+import esbuild from 'esbuild'
+import path from 'path'
 
+async function startServer() {
   let context
 
   const wsFile = path.join(process.cwd(), '/src/lib/websockets/index.js')
@@ -78,4 +78,4 @@ async function createServer() {
   app.listen(3000)
 }
 
-createServer()
+startServer()

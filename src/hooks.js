@@ -1,4 +1,4 @@
-import { resolveWs } from './lib/websockets/index'
+import { wsResolve } from './lib/websockets/index.js'
 
 /** @type {import('@sveltejs/kit').Handle} */
 export async function handle({ event, resolve }) {
@@ -8,7 +8,7 @@ export async function handle({ event, resolve }) {
   event.platform = event.platform || process._platform
 
   if (headers.get('upgrade') === 'websocket')
-    return resolveWs(event)
+    return wsResolve(event)
 
   return resolve(event)
 }
