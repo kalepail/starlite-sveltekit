@@ -1,17 +1,10 @@
 import { StatusError } from "itty-router-extras"
 
-export async function get({ request, platform, params }) {
+export async function get({ request, platform }) {
   try {
     const { headers } = request
-    const { id } = params
     const { env } = platform
     const { SOCKETS } = env
-
-    if (String(id) === 'null')
-      throw new StatusError(400, `Id ${id} is unsupported`)
-
-    if (!['foo', 'bar'].includes(id))
-      throw new StatusError(400, `Id must be one of either 'foo' or 'bar'`)
 
     if (headers.get('Upgrade') !== 'websocket')
       throw new StatusError(426, `Missing 'Upgrade: websocket' header`)

@@ -17,6 +17,9 @@ export class Sockets {
       case 'ws':
         return this.handleSocket(id)
 
+      case 'is':
+        return this.isSocket(id)
+
       default:
         return new Response('\u00AF\\_(\u30C4)_\/\u00AF', {
           status: 404
@@ -26,18 +29,20 @@ export class Sockets {
 
   async handleSocket(id) {
     const [client, server] = Object.values(new WebSocketPair())
-    this.sockets[id] = server
+    this.sockets[id] = {
+      ...(this.sockets[id] || {}),
+      ws: server
+    }
 
     server.accept()
 
     server.addEventListener('message', async (event) => {
-      const id = decoder.decode(event.data.slice(0, 3))
-      const data = event.data.slice(3)
-      const socket = this.sockets[id]
+      const { id, ...data } = JSON.parse(decoder.decode(event.data))
+      const socket = this.sockets[id]?.ws
 
       try {
         if (socket)
-          socket.send(data)
+          socket.send(encoder.encode(JSON.stringify(data)))
       } catch {}
     })
 
@@ -61,5 +66,19 @@ export class Sockets {
       status: 101,
       webSocket: client
     })
+  }
+
+  async isSocket(id) {
+    if (this.sockets[id]?.initiator)
+      return new Response(null, { 
+        status: 204, 
+        headers: {
+          'Content-Type': 'text/plain'
+        } 
+      })
+    else {
+      this.sockets[id.split('-').reverse().join('-')] = {initiator: true}
+      return new Response(null, { status: 404 })
+    }
   }
 }

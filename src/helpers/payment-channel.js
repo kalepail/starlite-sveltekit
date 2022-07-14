@@ -1,5 +1,3 @@
-// TODO integrate better balanced payment
-
 export async function generateOpenChannelTx({
   sourceAccount,
   publicKey1, 
@@ -50,18 +48,7 @@ export async function generateOpenChannelTx({
 
   txOpenChannel.sign(keypair1, keypair2)
 
-  try {
-    await server
-    .submitTransaction(txOpenChannel)
-    .then((res) => console.log(res))
-  } catch(err) {
-    if (err.response && err.response.data)
-      console.error(err.response.data)
-    else if (err.response)
-      console.error(err.response)
-    else
-      console.error(err)
-  }
+  return server.submitTransaction(txOpenChannel)
 }
 
 export async function generatePaymentChannelTx({
@@ -139,34 +126,8 @@ export async function generatePaymentChannelTx({
   txClose.sign(keypair1)
   txDeclaration.sign(keypair1)
 
-  // console.log('txClose', txClose.toXDR())
-  // console.log('txDeclaration', txDeclaration.toXDR())
-
   return {
     txClose: txClose.toXDR(),
     txDeclaration: txDeclaration.toXDR()
   }
-
-  // try {
-  //   await server
-  //   .submitTransaction(txDeclaration)
-  //   .then((res) => console.log(res))
-    
-  //   await new Promise((resolve) => {
-  //     setTimeout(() => {
-  //       resolve(
-  //         server
-  //         .submitTransaction(txClose)
-  //         .then((res) => console.log(res))
-  //       )
-  //     }, 1000)  
-  //   })
-  // } catch(err) {
-  //   if (err.response && err.response.data)
-  //     console.error(err.response.data)
-  //   else if (err.response)
-  //     console.error(err.response)
-  //   else
-  //     console.error(err)
-  // }
 }

@@ -1,6 +1,9 @@
+const encoder = new TextEncoder()
+const decoder = new TextDecoder()
+
 export async function handleResponse(response) {
   const isResponseJson = response.headers.get('content-type')?.indexOf('json') > -1
-  
+
   if (response.ok)
     return isResponseJson
     ? response.json() 
@@ -17,6 +20,18 @@ export async function handleResponse(response) {
 export function shajs(data) {
   return crypto.subtle.digest(
     {name: 'SHA-256'},
-    Buffer.from(data)
-  ).then(Buffer.from)
+    encoder.encode(data)
+  )
+}
+
+export function alertError(err) {
+  return alert(
+    err?.response?.data 
+    ? JSON.stringify(err.response.data, null, 2) 
+    : err?.message || err
+  )
+}
+
+export function abrv(key) {
+  return `${key.substring(0, 5)}...${key.substring(key.length - 5)}`
 }
