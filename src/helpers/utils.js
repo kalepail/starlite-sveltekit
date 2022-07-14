@@ -32,6 +32,7 @@ export function alertError(err) {
   )
 }
 
-export function abrv(key) {
-  return `${key.substring(0, 5)}...${key.substring(key.length - 5)}`
+export function abrv(key, length = 5) {
+  if (key)
+    return `${key.substring(0, length)}...${key.substring(key.length - length)}`
 }

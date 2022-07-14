@@ -8,12 +8,15 @@
   import { alertError, handleResponse, shajs, abrv } from '../../helpers/utils'
   import { generatePaymentChannelTx, generateOpenChannelTx } from '../../helpers/payment-channel'
   
+  let payerId = null
+  let payeeId = null
   let peer = null
   let socket = null
   let payments = []
   let keypair = null
+  let publicKey = null
   let sourceAccount = null
-  let totalPayments = 100
+  let totalPayments = 250
   let countSent = 0
   let countReceived = 0
   let paymentsPerSecond = 0
@@ -30,15 +33,15 @@
     const encoder = new TextEncoder()
     const decoder = new TextDecoder()
   
-    const payerId = $page.params.name1
-    const payeeId = $page.params.name2
+    payerId = $page.params.name1
+    payeeId = $page.params.name2
 
     keypair = Keypair.fromRawEd25519Seed(await shajs(dev + payerId))
     const keypair2 = Keypair.fromRawEd25519Seed(await shajs(dev + payeeId))
 
     server = new Server('https://horizon-testnet.stellar.org')
     
-    const publicKey = keypair.publicKey()
+    publicKey = keypair.publicKey()
     const publicKey2 = keypair2.publicKey()
 
     const [
@@ -95,8 +98,8 @@
     let pps = 0
   
     interval = setInterval(() => {
-      paymentsPerSecond = countReceived - pps
-      pps = countReceived
+      paymentsPerSecond = countReceived + countSent - pps
+      pps = countReceived + countSent
     }, 1000)
   
     function getIceIceBaby() {
@@ -293,7 +296,8 @@
   }
   </script>
   
-  <span>{keypair?.publicKey()}</span>
+  <span>{payerId} / {payeeId}</span>
+  <span>{abrv(publicKey, 10)}</span>
     
   <p>{countSent} payments sent</p>
   <p>{countReceived} payments received</p>
