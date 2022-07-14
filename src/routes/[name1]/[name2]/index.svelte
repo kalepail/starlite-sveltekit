@@ -297,7 +297,7 @@
   </script>
   
   <span>{payerId} / {payeeId}</span>
-  <span>{abrv(publicKey, 10)}</span>
+  <span><a class="text-blue-500 underline" href="https://stellar.expert/explorer/testnet/account/{publicKey}" target="_blank">{abrv(publicKey, 10)}</a></span>
     
   <p>{countSent} payments sent</p>
   <p>{countReceived} payments received</p>
