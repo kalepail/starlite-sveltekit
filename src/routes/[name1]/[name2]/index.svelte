@@ -296,7 +296,10 @@
   }
   </script>
   
-  <span>{payerId} / {payeeId}</span>
+  <div>
+    <span>{payerId} / {payeeId}</span>
+    <a href="/{payeeId}/{payerId}" target="_blank">(<span class="underline">open {payeeId} / {payerId}</span>)</a>
+  </div>
   <span><a class="text-blue-500 underline" href="https://stellar.expert/explorer/testnet/account/{publicKey}" target="_blank">{abrv(publicKey, 10)}</a></span>
     
   <p>{countSent} payments sent</p>
@@ -332,7 +335,8 @@
     max-height: 500px;
     overflow: scroll;
   }
-  span:not(.button) {
+  span:not(.button),
+  a {
     margin-bottom: 5px;
     font-size: 12px;
     max-width: 500px;
