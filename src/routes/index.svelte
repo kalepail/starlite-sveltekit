@@ -7,6 +7,8 @@
   }
 </script>
 
+<h1 class=""><strong>Starlite</strong></h1>
+<h2 class="mb-2">Open payment channel</h2>
 <form on:submit|preventDefault={open}>
   <input class="border" type="text" placeholder="Your name" bind:value={name1}>
   <input class="border" type="text" placeholder="Your friend's name" bind:value={name2}>
@@ -14,6 +16,9 @@
 </form>
 
 <style>
+  h2 {
+    font-size: 12px;
+  }
   form {
     display: flex;
     flex-direction: column;

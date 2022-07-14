@@ -5,8 +5,8 @@
   import BigNumber from 'bignumber.js'
   import { page } from '$app/stores';
   
-  import { alertError, handleResponse, shajs, abrv } from '../../helpers/utils'
-  import { generatePaymentChannelTx, generateOpenChannelTx } from '../../helpers/payment-channel'
+  import { alertError, handleResponse, shajs, abrv } from '../../../helpers/utils'
+  import { generatePaymentChannelTx, generateOpenChannelTx } from '../../../helpers/payment-channel'
   
   let payerId = null
   let payeeId = null
