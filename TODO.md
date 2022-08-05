@@ -1,0 +1,2 @@
+- [ ] Coordinate channel open
+- [ ] Channel open sequence number issues should be cause for a retry
