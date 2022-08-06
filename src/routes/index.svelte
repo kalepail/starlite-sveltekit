@@ -7,14 +7,16 @@
   }
 </script>
 
-<h1><strong>Starlite</strong></h1>
-<h2 class="mb-2">Open payment channel</h2>
+<div class="mx-auto">
+  <h1><strong>Starlite</strong></h1>
+  <h2 class="mb-2">Open payment channel</h2>
 
-<form on:submit|preventDefault={open} class="mb-4">
-  <input class="border" type="text" placeholder="Your name" bind:value={name1}>
-  <input class="border" type="text" placeholder="Your friend's name" bind:value={name2}>
-  <button>Open</button>
-</form>
+  <form on:submit|preventDefault={open} class="mb-4">
+    <input class="border" type="text" placeholder="Your name" bind:value={name1}>
+    <input class="border" type="text" placeholder="Your friend's name" bind:value={name2}>
+    <button>Open</button>
+  </form>
+</div>
 
 <hr class="border mb-4">
 
